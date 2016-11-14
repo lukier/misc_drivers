@@ -59,10 +59,13 @@ namespace robot
 class Turtlebot
 {
 public:
-    static constexpr float RobotWheelRadius = 0.035f;
-    static constexpr float RobotWheelBase = 0.230f;
+    static constexpr float RobotWheelRadius = 0.035f; // [m]
+    static constexpr float RobotWheelBase = 0.260f; // [m]
     static constexpr float TickToRadian = 0.002436916871363930187454f;
     static constexpr float TickToMeter = 0.000085292090497737556558f;
+    static constexpr float min_abs_yaw_vel = 0.0f;
+    static constexpr float max_abs_yaw_vel = 0.0f;
+    static constexpr float MaxWheelSpeed = 500.0f;
     
     class Exception : public std::exception
     {
@@ -186,6 +189,8 @@ public:
      * @param ang_speed rad/s
      */
     void motionTwist(float speed, float ang_speed);
+    
+    void motionTwist2(float linear, float angular);
     
     /**
       * @param speed mm/s.

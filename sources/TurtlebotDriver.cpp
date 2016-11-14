@@ -34,6 +34,7 @@
  */
 
 #include <cmath>
+#include <algorithm>
 #include <SerialPort.hpp>
 #include <TurtlebotDriver.hpp>
 
@@ -471,7 +472,7 @@ void drivers::robot::Turtlebot::motionStop()
 
 void drivers::robot::Turtlebot::motionTranslate(float speed)
 {
-    setSpeedRadius(speed, 0);
+    setSpeedRadius(speed * 1000.0f, 0);
 }
 
 void drivers::robot::Turtlebot::motionRotate(float rv)
@@ -512,16 +513,16 @@ void drivers::robot::Turtlebot::motionTwist(float speed, float ang_speed)
     if(fabs(ang_speed) < epsilon ) 
     {
         radius = 0.0f;
-        setSpeedRadius(speed, radius);
+        setSpeedRadius(speed * 1000.0f, radius);
         return;
     }
     
-    radius = speed / ang_speed;
+    radius = speed * 1000.0f / ang_speed;
     
     // Special Case #2 : Pure Rotation or Radius is less than or equal to 1.0 mm
-    if( fabs(speed) < epsilon || fabs(radius) <= 1.0f ) 
+    if( fabs(speed) < epsilon || fabs(radius) <= 0.001f ) 
     {
-        speed  = RobotWheelBase * ang_speed / 2.0f;
+        speed  = (RobotWheelBase * 1000.0f) * ang_speed / 2.0f;
         radius = 1.0f;
         setSpeedRadius(speed, radius);
         return;
@@ -530,16 +531,58 @@ void drivers::robot::Turtlebot::motionTwist(float speed, float ang_speed)
     // General Case :
     if( radius > 0.0f ) 
     {
-        speed  = (radius + RobotWheelBase / 2.0f) * ang_speed;
+        speed  = (radius + (RobotWheelBase * 1000.0f) / 2.0f) * ang_speed;
     } 
     else 
     {
-        speed  = (radius - RobotWheelBase / 2.0f) * ang_speed;
+        speed  = (radius - (RobotWheelBase * 1000.0f) / 2.0f) * ang_speed;
     }
     
     setSpeedRadius(speed, radius);
 }
 
+void drivers::robot::Turtlebot::motionTwist2(float linear, float angular)
+{
+    // Clamp to min abs yaw velocity, to avoid trying to rotate at low  speeds, which doesn't work well.
+    if((min_abs_yaw_vel > 0.0f) && (fabs(angular) >= std::numeric_limits<float>::epsilon()) && (fabs(angular) < min_abs_yaw_vel))
+    {
+        if(angular > 0.0f)
+        {
+            angular = min_abs_yaw_vel;
+        }
+        else
+        {
+            angular = -min_abs_yaw_vel;
+        }
+    }
+    
+    // Limit maximum yaw to avoid saturating the gyro
+    if((max_abs_yaw_vel > 0.0f) && (fabs(angular) >= std::numeric_limits<float>::epsilon()) && (fabs(angular) > max_abs_yaw_vel))
+    {
+        if(angular > 0.0f)
+        {
+            angular = max_abs_yaw_vel;
+        }
+        else
+        {
+            angular = -max_abs_yaw_vel;
+        }
+    }
+    
+    float ts  = linear * 1000.0f;
+    const float tw  = angular  * (RobotWheelBase / 2.0f) * 1000.0f;
+    
+    if(ts > 0.0f)
+    {
+        ts = std::min(ts, MaxWheelSpeed - (float)fabs(tw));
+    }
+    else
+    {
+        ts = std::max(ts, -(MaxWheelSpeed - (float)fabs(tw)));
+    }
+    
+    setSpeedRadius(int16_t(ts - tw), int16_t(ts + tw));
+}
 
 void drivers::robot::Turtlebot::setSpeedRadius(int16_t speed, int16_t radius)
 {
