@@ -5,7 +5,12 @@ This is a collection of C++11 classes to interface with various hardware.
 
 
 ## Features
-TBD
+* GStreamer - C++ GStreamer pipeline wrapper to build (de/en)coding pipelines.
+* Joystick - Linux Joystick wrapper.
+* SerialPort - wrapper over Boost::ASIO serial port.
+* TurtlebotClientServer - Turtlebot status & control over TCP/IP.
+* TurtlebotDriver - Turtlebot driver over serial port.
+* ViconClient - Vicon DataStream SDK wrapper.
 
 ## TODO
 Nothing tested.
