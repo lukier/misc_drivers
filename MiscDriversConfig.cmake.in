@@ -4,5 +4,10 @@ find_dependency(cereal QUIET)
 find_dependency(VisionCore QUIET)
 find_dependency(MiscCpp QUIET)
 
+set(MiscDrivers_SUPPORTS_SERIALPORT @MISCDRIVERS_SUPPORTS_SERIALPORT@)
+set(MiscDrivers_SUPPORTS_TURTLEBOT @MISCDRIVERS_SUPPORTS_TURTLEBOT@)
+set(MiscDrivers_SUPPORTS_GSTREAMER @MISCDRIVERS_SUPPORTS_GSTREAMER@)
+set(MiscDrivers_SUPPORTS_VICON @MISCDRIVERS_SUPPORTS_VICON@)
+
 include("${CMAKE_CURRENT_LIST_DIR}/MiscDriversTargets.cmake")
 

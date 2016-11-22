@@ -121,7 +121,9 @@ sources/Joystick.cpp
 if(Boost_FOUND)
     list(APPEND HEADERS include/SerialPort.hpp)
     list(APPEND SOURCES sources/SerialPort.cpp)
+    set(MISCDRIVERS_SUPPORTS_SERIALPORT ON)
     if(MiscCpp_FOUND)
+        set(MISCDRIVERS_SUPPORTS_TURTLEBOT ON)
         list(APPEND HEADERS include/TurtlebotDriver.hpp include/TurtlebotClientServer.hpp)
         list(APPEND SOURCES sources/TurtlebotDriver.cpp sources/TurtlebotClientServer.cpp)
     endif()
@@ -130,11 +132,13 @@ endif()
 if(GSTREAMER_FOUND)
     list(APPEND HEADERS include/GStreamer.hpp)
     list(APPEND SOURCES sources/GStreamer.hpp)
+    set(MISCDRIVERS_SUPPORTS_GSTREAMER ON)
 endif()
 
 if(VICON_FOUND AND VisionCore_FOUND)
     list(APPEND HEADERS include/ViconClient.hpp)
     list(APPEND SOURCES sources/ViconClient.cpp)
+    set(MISCDRIVERS_SUPPORTS_VICON ON)
 endif()
 
 # ------------------------------------------------------------------------------
@@ -197,6 +201,16 @@ if(VICON_FOUND AND VisionCore_FOUND)
     endif()
 endif()
 
+# ------------------------------------------------------------------------------
+# Build executables
+# ------------------------------------------------------------------------------
+if(MISCDRIVERS_SUPPORTS_TURTLEBOT)
+    add_executable(TurtlebotClient sources/TurtlebotClientApp.cpp)
+    target_link_libraries(TurtlebotClient PUBLIC ${PROJECT_NAME})
+    add_executable(TurtlebotServer sources/TurtlebotServerApp.cpp)
+    target_link_libraries(TurtlebotServer PUBLIC ${PROJECT_NAME})
+    set(OPT_TARGETS TurtlebotClient TurtlebotServer)
+endif()
     
 # ------------------------------------------------------------------------------
 # Unit Tests
@@ -214,7 +228,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY SOVERSION 1)
 set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_${PROJECT_NAME}_MAJOR_VERSION 1)
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY COMPATIBLE_INTERFACE_STRING ${PROJECT_NAME}_MAJOR_VERSION)
 
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets
+install(TARGETS ${PROJECT_NAME} ${OPT_TARGETS} EXPORT ${PROJECT_NAME}Targets
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin

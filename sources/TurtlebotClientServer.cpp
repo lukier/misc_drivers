@@ -529,7 +529,18 @@ struct drivers::robot::TurtlebotClient::TurtlebotClientPimpl
             if(isConnected())
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(wdt));
-                keepAlive();
+                try
+                {
+                    keepAlive();
+                }
+                catch(const std::exception& ex)
+                {
+                    // FIXME what to do?
+                }
+                catch(...)
+                {
+                    // FIXME what to do?
+                }
                 // TODO maybe check if motion active
             }
         }
