@@ -205,10 +205,17 @@ endif()
 # Build executables
 # ------------------------------------------------------------------------------
 if(MISCDRIVERS_SUPPORTS_TURTLEBOT)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+
     add_executable(TurtlebotClient sources/TurtlebotClientApp.cpp)
     target_link_libraries(TurtlebotClient PUBLIC ${PROJECT_NAME})
+    target_link_libraries(TurtlebotClient PRIVATE Threads::Threads)
+    
     add_executable(TurtlebotServer sources/TurtlebotServerApp.cpp)
     target_link_libraries(TurtlebotServer PUBLIC ${PROJECT_NAME})
+    target_link_libraries(TurtlebotServer PRIVATE Threads::Threads)
+    
     set(OPT_TARGETS TurtlebotClient TurtlebotServer)
 endif()
     
