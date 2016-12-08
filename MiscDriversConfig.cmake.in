@@ -1,8 +1,20 @@
 include(CMakeFindDependencyMacro)
 
-find_dependency(cereal QUIET)
-find_dependency(VisionCore QUIET)
-find_dependency(MiscCpp QUIET)
+if(@VisionCore_FOUND@)
+    find_dependency(VisionCore QUIET)
+endif()
+
+if(@MiscCpp_FOUND@)
+    find_dependency(MiscCpp QUIET)
+endif()
+
+if(@cereal_FOUND@)
+    find_dependency(cereal QUIET)
+endif()
+
+if(@CameraModels_FOUND@)
+    find_dependency(CameraModels QUIET)
+endif()
 
 set(MiscDrivers_SUPPORTS_SERIALPORT @MISCDRIVERS_SUPPORTS_SERIALPORT@)
 set(MiscDrivers_SUPPORTS_TURTLEBOT @MISCDRIVERS_SUPPORTS_TURTLEBOT@)
