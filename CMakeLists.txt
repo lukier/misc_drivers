@@ -82,14 +82,10 @@ message("Project: ${PROJECT_NAME} / ${${PROJECT_NAME}_VERSION}, build type: ${CM
 # ------------------------------------------------------------------------------
 # Dependencies
 # ------------------------------------------------------------------------------
-# for ASIO (SerialPort)
-find_package(Boost COMPONENTS system QUIET)
+# For TurtleBot
+find_package(MiscCpp QUIET)
 
-if(Boost_FOUND)
-    find_package(MiscCpp QUIET)
-endif()
-
-# for GStreamer
+# For GStreamer
 find_package(GLIB QUIET)
 if(GLIB_FOUND)
     find_package(LibXml2 QUIET)
@@ -98,7 +94,7 @@ if(GLIB_FOUND)
     endif()
 endif()
 
-# for ViconClient
+# For ViconClient
 find_package(Vicon QUIET)
 find_package(cereal QUIET)
 
@@ -112,32 +108,27 @@ endif()
 # List of sources
 # ---------------------------------------------
 set(HEADERS
-include/Joystick.hpp
+include/misc_drivers/Joystick.hpp
 )
 
 set(SOURCES
 sources/Joystick.cpp
 )
 
-if(Boost_FOUND)
-    list(APPEND HEADERS include/SerialPort.hpp)
-    list(APPEND SOURCES sources/SerialPort.cpp)
-    set(MISCDRIVERS_SUPPORTS_SERIALPORT ON)
-    if(MiscCpp_FOUND)
-        set(MISCDRIVERS_SUPPORTS_TURTLEBOT ON)
-        list(APPEND HEADERS include/TurtlebotDriver.hpp include/TurtlebotClientServer.hpp)
-        list(APPEND SOURCES sources/TurtlebotDriver.cpp sources/TurtlebotClientServer.cpp)
-    endif()
+if(MiscCpp_FOUND)
+    set(MISCDRIVERS_SUPPORTS_TURTLEBOT ON)
+    list(APPEND HEADERS include/misc_drivers/TurtlebotDriver.hpp include/misc_drivers/TurtlebotClientServer.hpp)
+    list(APPEND SOURCES sources/TurtlebotDriver.cpp sources/TurtlebotClientServer.cpp)
 endif()
 
 if(GSTREAMER_FOUND)
-    list(APPEND HEADERS include/GStreamer.hpp)
-    list(APPEND SOURCES sources/GStreamer.hpp)
+    list(APPEND HEADERS include/misc_drivers/GStreamer.hpp)
+    list(APPEND SOURCES sources/GStreamer.cpp)
     set(MISCDRIVERS_SUPPORTS_GSTREAMER ON)
 endif()
 
 if(VICON_FOUND AND VisionCore_FOUND)
-    list(APPEND HEADERS include/ViconClient.hpp)
+    list(APPEND HEADERS include/misc_drivers/ViconClient.hpp)
     list(APPEND SOURCES sources/ViconClient.cpp)
     set(MISCDRIVERS_SUPPORTS_VICON ON)
 endif()
@@ -156,12 +147,8 @@ if(cereal_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC MISC_DRIVERS_HAVE_CEREAL)
 endif()
     
-if(Boost_FOUND)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
-    if(MiscCpp_FOUND)
-        target_link_libraries(${PROJECT_NAME} PUBLIC MiscCpp)
-    endif()
+if(MiscCpp_FOUND)
+    target_link_libraries(${PROJECT_NAME} PUBLIC MiscCpp)
 endif()
 
 if(GSTREAMER_FOUND)

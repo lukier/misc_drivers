@@ -33,7 +33,7 @@
  * ****************************************************************************
  */
 
-#include <GStreamer.hpp>
+#include <misc_drivers/GStreamer.hpp>
 
 // Not my code, not my problem
 #pragma GCC diagnostic push

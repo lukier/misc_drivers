@@ -32,7 +32,7 @@
  * Vicon Client Wrapper.
  * ****************************************************************************
  */
-#include <ViconClient.hpp>
+#include <misc_drivers/ViconClient.hpp>
 
 #include <map>
 #include <chrono>

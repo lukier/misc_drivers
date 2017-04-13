@@ -3,17 +3,17 @@
 #include <cmath>
 #include <chrono>
 
-#include <nanomsg.hpp>
+#include <misccpp/nanomsg.hpp>
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/map.hpp>
-#include <cereal_raw_binary.hpp>
+#include <misccpp/cereal_raw_binary.hpp>
 
-#include <TurtlebotDriver.hpp>
+#include <misc_drivers/TurtlebotDriver.hpp>
 
-#include <TurtlebotClientServer.hpp>
+#include <misc_drivers/TurtlebotClientServer.hpp>
 
 template<typename T>
 static inline T constrainAngle(T x)

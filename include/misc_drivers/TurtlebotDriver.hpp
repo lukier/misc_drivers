@@ -45,8 +45,8 @@
 #include <atomic>
 #include <thread>
 
-#include <BufferEncode.hpp>
-#include <BufferDecode.hpp>
+#include <misccpp/BufferEncode.hpp>
+#include <misccpp/BufferDecode.hpp>
 
 namespace drivers
 {

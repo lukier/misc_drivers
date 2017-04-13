@@ -4,10 +4,10 @@
 #include <thread>
 #include <signal.h>
 
-#include <nanomsg.hpp>
+#include <misccpp/nanomsg.hpp>
 
-#include <Joystick.hpp>
-#include <TurtlebotClientServer.hpp>
+#include <misc_drivers/Joystick.hpp>
+#include <misc_drivers/TurtlebotClientServer.hpp>
 
 static constexpr float joyReducer = 0.75f;
 

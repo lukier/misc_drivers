@@ -48,7 +48,7 @@
 // testing framework & libraries
 #include <gtest/gtest.h>
 
-#include <ViconClient.hpp>
+#include <misc_drivers/ViconClient.hpp>
 
 class Test_ViconClient : public ::testing::Test
 {

@@ -35,12 +35,13 @@
 
 #include <cmath>
 #include <algorithm>
-#include <SerialPort.hpp>
-#include <TurtlebotDriver.hpp>
+#include <misccpp/drivers/SerialPort.hpp>
+#include <misc_drivers/TurtlebotDriver.hpp>
 
 drivers::robot::Turtlebot::Turtlebot(const std::string& ttydev, int abaudrate, std::chrono::milliseconds to) : 
-    sp(new SerialPort(ttydev, abaudrate)), go_shutdown(false), timeoutMS(to.count())
+    sp(new SerialPort()), go_shutdown(false), timeoutMS(to.count())
 {
+    sp->open(ttydev, abaudrate);
     poll_thread = std::thread(&drivers::robot::Turtlebot::receiveThread, this);
 }
 
@@ -63,8 +64,7 @@ void drivers::robot::Turtlebot::receiveThread()
         // TODO FIXME rewrite this state machine
         try
         {
-            ok = sp->receiveBytes(1, &data, timeoutMS);
-            if(ok == true) // timeout
+            if(!sp->read(&data, 1, std::chrono::milliseconds(timeoutMS))) // timeout
             {
                 continue;
             }
@@ -96,8 +96,7 @@ void drivers::robot::Turtlebot::receiveThread()
                 length = data;
                 
                 // read payload
-                ok = sp->receiveBytes(length, buffer_in.begin(), timeoutMS);
-                if(ok == true)  // timeout
+                if(!sp->read(buffer_in.begin(), length, std::chrono::milliseconds(timeoutMS))) // timeout
                 {
                     cstate = PortState::Waiting;
                     continue;
@@ -462,7 +461,7 @@ void drivers::robot::Turtlebot::sendPacket(BufferEncode& be)
     buffer_out[total_packet_size] = checksum;
     
     // transmit
-    sp->transmitBytes(total_packet_size + 1, buffer_out.begin(), -1);
+    sp->write(buffer_out.begin(), total_packet_size + 1, std::chrono::milliseconds(0));
 }
 
 void drivers::robot::Turtlebot::motionStop()

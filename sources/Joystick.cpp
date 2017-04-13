@@ -41,7 +41,7 @@
 
 #include <stdexcept>
 
-#include <Joystick.hpp>
+#include <misc_drivers/Joystick.hpp>
 
 drivers::sensor::Joystick::Joystick(const std::string& devpath) : joy_fd(0)
 {
