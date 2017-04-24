@@ -51,7 +51,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <Eigen/StdVector>
-#include <EigenSerializers.hpp>
+#include <VisionCore/EigenSerializers.hpp>
 
 #include <sophus/se3.hpp>
 
@@ -63,7 +63,7 @@
 #endif // MISC_DRIVERS_HAVE_CEREAL
 
 #ifdef MISC_DRIVERS_HAVE_CAMERA_MODELS
-#include <PinholeDistortedCameraModel.hpp>
+#include <CameraModels/PinholeDisparityDistorted.hpp>
 #endif // MISC_DRIVERS_HAVE_CAMERA_MODELS
 
 namespace drivers
@@ -368,7 +368,7 @@ struct ViconCameraWithPose
 };
 
 #ifdef MISC_DRIVERS_HAVE_CAMERA_MODELS
-typedef ViconCameraWithPose<::camera::PinholeDistortedCameraModel<double>, double> NamedViconCameraT;
+typedef ViconCameraWithPose<cammod::PinholeDisparityDistorted<double>, double> NamedViconCameraT;
 bool ViconCalibrationFileParse(const std::string& fn, std::vector<NamedViconCameraT>& out_cams);
 #endif // MISC_DRIVERS_HAVE_CAMERA_MODELS
     
