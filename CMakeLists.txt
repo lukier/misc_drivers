@@ -204,7 +204,11 @@ if(MISCDRIVERS_SUPPORTS_TURTLEBOT)
     target_link_libraries(TurtlebotServer PUBLIC ${PROJECT_NAME})
     target_link_libraries(TurtlebotServer PRIVATE Threads::Threads)
     
-    set(OPT_TARGETS TurtlebotClient TurtlebotServer)
+    add_executable(TurtlebotLocal sources/TurtlebotLocalApp.cpp)
+    target_link_libraries(TurtlebotLocal PUBLIC ${PROJECT_NAME})
+    target_link_libraries(TurtlebotLocal PRIVATE Threads::Threads)
+    
+    set(OPT_TARGETS TurtlebotClient TurtlebotServer TurtlebotLocal)
 endif()
     
 # ------------------------------------------------------------------------------

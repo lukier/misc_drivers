@@ -41,7 +41,10 @@
 drivers::robot::Turtlebot::Turtlebot(const std::string& ttydev, int abaudrate, std::chrono::milliseconds to) : 
     sp(new SerialPort()), go_shutdown(false), timeoutMS(to.count())
 {
-    sp->open(ttydev.c_str(), abaudrate);
+    if(!sp->open(ttydev.c_str(), abaudrate))
+    {
+        throw std::runtime_error("Cannot open serial port");
+    }
     poll_thread = std::thread(&drivers::robot::Turtlebot::receiveThread, this);
 }
 
