@@ -48,7 +48,7 @@
 // testing framework & libraries
 #include <gtest/gtest.h>
 
-#include <GStreamer.hpp>
+#include <misc_drivers/GStreamer.hpp>
 
 class Test_GStreamer : public ::testing::Test
 {
