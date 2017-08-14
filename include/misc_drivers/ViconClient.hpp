@@ -230,7 +230,7 @@ public:
 template<typename T>
 struct ViconCompactObject
 {
-    typedef Sophus::SE3Group<T>  PoseT;
+    typedef Sophus::SE3<T>  PoseT;
     typedef Eigen::Matrix<T,3,1> PointT;
     
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -347,7 +347,7 @@ struct ViconCompactPacket
 template<typename CameraT, typename Scalar>
 struct ViconCameraWithPose
 {
-    typedef Sophus::SE3Group<Scalar> PoseT;
+    typedef Sophus::SE3<Scalar> PoseT;
     typedef CameraT ModelT;
     
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW

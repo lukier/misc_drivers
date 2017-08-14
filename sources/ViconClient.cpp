@@ -340,7 +340,8 @@ bool drivers::sensor::ViconCalibrationFileParse(const std::string& fn, std::vect
             NamedViconCameraT camout;
             camout.CameraID = cam_id;
             camout.Model = NamedViconCameraT::ModelT(focal, focal, princ_u, princ_v, radial_k1, radial_k2, 0.0, 0.0, 0.0, sens_x, sens_y);
-            camout.Pose = NamedViconCameraT::PoseT(Eigen::Quaternion<NamedViconCameraT::PoseT::Scalar>( orient_w , orient_x , orient_y , orient_z ), Eigen::Matrix<NamedViconCameraT::PoseT::Scalar,3,1>(pos_x, pos_y, pos_z));
+            camout.Pose = NamedViconCameraT::PoseT(Eigen::Quaternion<NamedViconCameraT::PoseT::Scalar>( orient_w , orient_x , orient_y , orient_z ), 
+                                                   Eigen::Matrix<NamedViconCameraT::PoseT::Scalar,3,1>(pos_x, pos_y, pos_z));
             out_cams.push_back(camout);
         }
     }
