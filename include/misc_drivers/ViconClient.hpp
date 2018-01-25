@@ -51,7 +51,6 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <Eigen/StdVector>
-#include <VisionCore/EigenSerializers.hpp>
 
 #include <sophus/se3.hpp>
 
