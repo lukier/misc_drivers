@@ -259,7 +259,7 @@ bool drivers::sensor::ViconCalibrationFileParse(const std::string& fn, std::vect
 {
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLError err = doc.LoadFile(fn.c_str());
-    if(err != tinyxml2::XMLError::XML_NO_ERROR)
+    if(err != tinyxml2::XMLError::XML_SUCCESS)
     {
         return false;
     }
